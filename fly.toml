@@ -1,37 +1,45 @@
-# fly.toml app configuration file generated for rust-axum on 2023-09-09T13:36:53-07:00
+# fly.toml app configuration file generated for giveip-io on 2023-04-26T19:25:39Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = "rust-axum"
-primary_region = "sea"
+primary_region = "den"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
 
 [experimental]
-  cmd = ["./rust-axum"]
-
-[build]
+  auto_rollback = true
 
 [env]
-  PORT = "8080"
+  CLIENT_IP_HEADER = "Fly-Client-IP"
+
+[build]
+  image = "ghcr.io/randomairborne/giveip:latest"
+
+[metrics]
+  port = 9090
+  path = "/metrics"
 
 [[services]]
   protocol = "tcp"
   internal_port = 8080
+  processes = ["app"]
 
-  [[services.ports]]
-    port = 80
-    handlers = ["http"]
+[[services.ports]]
+  port = 80
+  handlers = ["http"]
 
-  [[services.ports]]
-    port = 443
-    handlers = ["tls", "http"]
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
+[[services.ports]]
+  port = 443
+  handlers = ["tls", "http"]
+[services.concurrency]
+  type = "connections"
+  hard_limit = 25
+  soft_limit = 20
 
-  [[services.tcp_checks]]
-    interval = "15s"
-    timeout = "2s"
-    grace_period = "1s"
+[[services.tcp_checks]]
+  interval = "15s"
+  timeout = "2s"
+  grace_period = "1s"
+  restart_limit = 0

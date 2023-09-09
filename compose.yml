@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  rust-axum:
+    image: ghcr.io/randomairborne/giveip
+    restart: always
+    ports:
+      - "9002:8080"

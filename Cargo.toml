@@ -8,6 +8,10 @@ edition = "2021"
 [dependencies]
 axum = { version = "0.6", features = ["tokio", "http1", "http2"], default-features = false }
 tokio = {version = "1", features = ["full"]}
+tokio-shutdown = { version = "0.1", default-features = false }
+prometheus = { version = "0.13", default-features = false }
+prometheus-static-metric = "0.5"
+thiserror = "1"
 
 [dev-dependencies]
 anyhow = "1"
