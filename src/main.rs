@@ -77,12 +77,9 @@ async fn main() {
         .route("/", get(home))
         .route("/raw", any(raw))
         .layer(axum::middleware::from_fn(nocors))
-        
         .with_state(state.clone());
     let sd = tokio_shutdown::Shutdown::new().unwrap();
-    println!(
-        "Listening on http://{addr} for ip requests"
-    );
+    println!("Listening on http://{addr} for ip requests");
     let sd_s = sd.clone();
     axum::Server::bind(&addr)
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
