@@ -77,6 +77,7 @@ async fn main() {
         .route("/", get(home))
         .route("/raw", any(raw))
         .layer(axum::middleware::from_fn(nocors))
+        
         .with_state(state.clone());
     let sd = tokio_shutdown::Shutdown::new().unwrap();
     println!(
