@@ -15,7 +15,7 @@ kill_timeout = "5s"
   CLIENT_IP_HEADER = "Fly-Client-IP"
 
 [build]
-  image = "ghcr.io/randomairborne/giveip:latest"
+  image = "ghcr.io/matthewharwood/rust-axum:latest"
 
 [metrics]
   port = 9090
