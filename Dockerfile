@@ -1,23 +1,15 @@
-FROM rust:latest as builder
+FROM rust:alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /build
 COPY . .
-# Will build and cache the binary and dependent crates in release mode
-RUN --mount=type=cache,target=/usr/local/cargo,from=rust:latest,source=/usr/local/cargo \
-    --mount=type=cache,target=target \
-    cargo build --release && mv ./target/release/rust-axum ./rust-axum
 
-# Runtime image
-FROM debian:bullseye-slim
+RUN apk add musl-dev
+RUN cargo build --release
 
-# Run as "app" user
-RUN useradd -ms /bin/bash app
+FROM alpine
 
-USER app
-WORKDIR /app
+COPY --from=builder /build/target/release/rust-axum /usr/bin/rust-axum
 
-# Get compiled binaries from builder's cargo install directory
-COPY --from=builder /usr/src/app/rust-axum /app/rust-axum
+EXPOSE 8080
 
-# Run the app
-CMD ./rust-axum
+CMD [ "/usr/bin/rust-axum" ]
