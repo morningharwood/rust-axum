@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   rust-axum:
-    image: ghcr.io/matthewharwood/rust-axum
+    image: ghcr.io/morningharwood/rust-axum
     restart: always
     ports:
       - "9002:8080"
